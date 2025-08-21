@@ -1,0 +1,255 @@
+/* Colores de fondo y texto */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background-color: #000000;
+    background-image: url('images/fondo-textura-marmol-negro_322958-1983.webp');
+    color: #fff;
+}
+.logo-img {
+    width: 160px;
+    height: auto;
+    margin-top: 10px;
+}
+
+.header {
+    text-align: center;
+    padding:5px 20px;
+    background-color: #1d1c1c; /* Color de respaldo */
+    background-image: url('images/fondo-textura-marmol-negro_322958-1983.webp');
+    background-size: cover;
+    background-position: center;
+    color: #fff;
+    border-bottom: 2px solid #333;
+}
+
+.slogan {
+    font-size: 1.2rem;
+}
+
+.menu-container {
+    max-width: 900px;
+    margin: 20px auto;
+    padding: 0 20px;
+    
+}
+.menu-section {
+    background-color: #1d1c1c; /* Color de respaldo */
+    background-image: url('images/fondo-textura-marmol-negro_322958-1983.webp');
+    background-size: cover;
+    background-position: center;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border: 2px solid #333;
+}
+.menu-item .item-img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-right: 15px;
+}
+.logo {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+}
+
+/* ESTILOS DE LA FLECHA Y ACORDEÓN */
+.section-toggle {
+    text-align: center;
+    color: #b11f0e;
+    margin-top: 0;
+    font-size: 1.5rem;
+    padding-bottom: 5px;
+    border-bottom: 2px solid #b11f0e;
+    cursor: pointer;
+    position: relative;
+    user-select: none;
+    transition: color 0.3s ease, border-bottom 0.3s ease;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+.section-toggle.clicked {
+    color: #ffffff; /* Blanco */
+    border-bottom: 2px solid #ffffff;
+}
+
+.toggle-text {
+    font-size: 0.7rem;
+    color: #bbb;
+    text-transform: uppercase;
+    position: absolute;
+    right: 0px;
+    top: -5px;
+}
+
+.arrow {
+    font-size: 1.5rem;
+    transition: transform 0.3s ease;
+}
+
+/* ... (El resto de tu CSS anterior) ... */
+
+
+.menu-items {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s ease-in-out;
+}
+
+/* Estado al cargar la página (colapsado por defecto) */
+.menu-section.collapsed .menu-items {
+    max-height: 0;
+}
+.menu-section.collapsed .arrow::after {
+    content: "▶";
+}
+.menu-section.collapsed .toggle-text::after {
+    content: "MOSTRAR";
+}
+.menu-section.collapsed .toggle-text {
+    display: block;
+}
+
+/* Estado expandido */
+.menu-section:not(.collapsed) .menu-items {
+    max-height: 2000px; /* Ajusta este valor para que sea mayor que el contenido más largo */
+}
+.menu-section:not(.collapsed) .arrow::after {
+    content: "▼";
+}
+.menu-section:not(.collapsed) .toggle-text::after {
+    content: "OCULTAR";
+}
+.menu-section:not(.collapsed) .toggle-text {
+    display: block;
+}
+
+/* Estilo para los ítems del menú */
+.menu-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #333;
+    padding: 15px 0;
+}
+
+.item-info {
+    flex-grow: 1;
+}
+
+.item-info h3 {
+    margin: 0 0 5px;
+    color: #fff;
+    font-size: 1.2rem;
+}
+
+.item-info p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #bbb;
+}
+
+.price {
+    font-weight: bold;
+    color: #fff;
+    font-size: 1.2rem;
+}
+
+.menu-item img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+/* Estilos para el footer y los sponsors */
+footer {
+    text-align: center;
+    padding: 20px;
+    font-size: 0.8rem;
+    color: #aaa;
+    background-color: #000; /* Color de respaldo */
+    background-image: url('images/fondo-textura-marmol-negro_322958-1983.avif');
+    background-size: cover;
+    background-position: center;
+    border-top: 2px solid #333;
+}
+
+.sponsors-container {
+    margin-bottom: 20px;
+}
+
+.sponsors-container p {
+    margin: 0 0 10px;
+    font-size: 0.9rem;
+    color: #777;
+}
+
+.sponsor-logos {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+}
+
+.sponsor-logos img {
+    height: 30px;
+    width: auto;
+    transition: filter 0.3s ease;
+}
+
+.sponsor-logos img:hover {
+    filter: grayscale(0%);
+}
+
+.copyright {
+    margin: 0;
+    margin-top: 10px;
+}
+
+/* Estilos para el botón "Volver al inicio" */
+#back-to-top {
+    border: 2px solid #333;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #b11f0e;
+    color: rgb(0, 0, 0);
+    width: 60px;
+    height: 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    text-decoration: none;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    z-index: 1000;
+}
+
+#back-to-top:hover {
+    background-color: #b11f0e;
+    transform: scale(1.1);
+}
+
+#back-to-top span {
+    display: block;
+    text-align: center;
+}
+
+#back-to-top span:first-child {
+    font-size: 2rem;
+    margin-bottom: 2px;
+}
+
+#back-to-top span:last-child {
+    font-size: 0.8rem;
+}
