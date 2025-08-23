@@ -252,4 +252,48 @@ footer {
 
 #back-to-top span:last-child {
     font-size: 0.8rem;
+
+}
+
+/* --- Media Queries para hacer el menú responsive (PRECIOS MÁS PEQUEÑOS) --- */
+
+@media (max-width: 768px) {
+    /* Estilos para pantallas medianas y pequeñas (ej. tablets) */
+    .menu-item .item-info h3 {
+        font-size: 1rem; /* Reduce un poco el título */
+    }
+    .menu-item .item-info p {
+        font-size: 0.75rem; /* Reduce un poco la descripción */
+    }
+    .price {
+        font-size: 1rem; /* Reduce el precio */
+        min-width: 70px; /* Ajusta el ancho mínimo si es necesario */
+    }
+}
+
+@media (max-width: 576px) {
+    /* Estilos para pantallas muy pequeñas (ej. celulares) */
+    .menu-item .item-info h3 {
+        font-size: 0.9rem; /* Reduce aún más el título */
+    }
+    .menu-item .item-info p {
+        font-size: 0.7rem; /* Reduce aún más la descripción */
+    }
+    .price {
+        font-size: 0.9rem; /* Reduce aún más el precio */
+        min-width: 60px; /* Ajusta el ancho mínimo si es necesario */
+    }
+    .section-toggle h2 {
+        font-size: 1.3rem; /* Reduce un poco el título de la sección */
+    }
+    .section-toggle .toggle-text {
+        font-size: 0.5rem; /* Reduce el texto mostrar/ocultar */
+        top: -12px;
+    }
+    .logo-img {
+        width: 150px; /* Reduce el tamaño del logo en pantallas pequeñas */
+    }
+    .slogan {
+        font-size: 1rem; /* Reduce el tamaño del slogan */
+    }
 }
