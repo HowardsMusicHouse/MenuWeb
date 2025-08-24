@@ -118,7 +118,7 @@ body {
 
 /* Estado expandido */
 .menu-section:not(.collapsed) .menu-items {
-    max-height: 2000px; /* Ajusta este valor para que sea mayor que el contenido más largo */
+    max-height: 2500px; /* Ajusta este valor para que sea mayor que el contenido más largo */
 }
 .menu-section:not(.collapsed) .arrow::after {
     content: "▼";
@@ -252,8 +252,14 @@ footer {
 
 #back-to-top span:last-child {
     font-size: 0.8rem;
-
 }
+
+.menu-item .item-img { border: 2px solid #b11f0e; 
+    border-radius: 8px; 
+    margin-right: 15px; 
+    object-fit: cover; 
+    width: 80px; height: 80px; }
+
 
 /* --- Media Queries para hacer el menú responsive (PRECIOS MÁS PEQUEÑOS) --- */
 
