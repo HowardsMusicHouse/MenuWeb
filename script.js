@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
-    // === INICIO: LÓGICA CORREGIDA PARA PERSONALIZADOR DE CARTEL (COMPATIBLE CON CELULARES) ===
+    // === INICIO: LÓGICA REFORZADA PARA PERSONALIZADOR DE CARTEL ===
 
     const cartelBtns = document.querySelectorAll('.cartel-btn');
     const modal = document.getElementById('cartel-modal');
@@ -41,7 +41,6 @@ document.addEventListener("DOMContentLoaded", function() {
         ];
         const disponiblesContainer = document.getElementById('disponibles-container');
 
-        // Almacenará el último texto válido para poder revertir si el usuario se pasa de letras
         let lastValidValues = {
             fila1: "",
             fila2: "",
@@ -68,10 +67,10 @@ document.addEventListener("DOMContentLoaded", function() {
                 disponiblesContainer.appendChild(span);
             }
         }
-
+        
+        // Función de conteo sin cambios, lee el estado actual de los inputs
         function contarUso() {
             const uso = {};
-            // Unimos el texto de los 3 inputs para el conteo total
             const textoCompleto = inputs.map(input => input.value).join('').toUpperCase();
             for (const char of textoCompleto) {
                 if (inventarioLetras.hasOwnProperty(char)) {
@@ -81,45 +80,60 @@ document.addEventListener("DOMContentLoaded", function() {
             return uso;
         }
 
-        // Nueva función principal que se ejecuta con el evento 'input'
+        // Nueva función de validación más robusta
         function handleInputValidation(event) {
-            const usoActual = contarUso();
-            let esValido = true;
+            const input = event.target;
+            const inputId = input.id;
 
-            // 1. Comprueba si alguna letra excede el inventario
+            // 1. Tomamos una "foto" del estado actual de todos los inputs
+            const currentValues = {};
+            inputs.forEach(i => {
+                currentValues[i.id] = i.value.toUpperCase();
+            });
+
+            // 2. Contamos el uso de letras basándonos en esa "foto"
+            const usoActual = (function() {
+                const uso = {};
+                const textoCompleto = Object.values(currentValues).join('');
+                for (const char of textoCompleto) {
+                    if (inventarioLetras.hasOwnProperty(char)) {
+                        uso[char] = (uso[char] || 0) + 1;
+                    }
+                }
+                return uso;
+            })();
+
+            // 3. Verificamos si el estado actual es válido
+            let esValido = true;
             for (const letra in usoActual) {
                 if (usoActual[letra] > inventarioLetras[letra]) {
                     esValido = false;
                     break;
                 }
             }
-            
-            const input = event.target;
-            const inputId = input.id;
 
-            // 2. Si el texto NO es válido, revierte al valor anterior
-            if (!esValido) {
+            // 4. Actuamos en consecuencia
+            if (esValido) {
+                // Si es válido, actualizamos el valor guardado y nos aseguramos de que esté en mayúsculas
+                input.value = currentValues[inputId];
+                lastValidValues[inputId] = currentValues[inputId];
+            } else {
+                // Si es inválido, forzamos la reversión al último estado bueno conocido
                 input.value = lastValidValues[inputId];
                 input.classList.add('error');
                 setTimeout(() => input.classList.remove('error'), 500);
-            } else {
-            // 3. Si ES válido, actualiza el valor guardado
-                // Forzamos mayúsculas para consistencia
-                input.value = input.value.toUpperCase();
-                lastValidValues[inputId] = input.value;
             }
 
-            // 4. Actualiza el contador de letras con el estado final (ya sea nuevo o revertido)
+            // 5. Al final, siempre actualizamos la interfaz de letras disponibles
             renderizarLetrasDisponibles(contarUso());
         }
         
         function abrirModal() {
-            // Resetea los campos y los valores guardados cada vez que se abre
             inputs.forEach(input => {
                 input.value = '';
             });
             lastValidValues = { fila1: "", fila2: "", fila3: "" };
-            renderizarLetrasDisponibles(); // Actualiza la UI al estado inicial
+            renderizarLetrasDisponibles();
             modal.classList.add('visible');
         }
 
@@ -127,7 +141,7 @@ document.addEventListener("DOMContentLoaded", function() {
             modal.classList.remove('visible');
         }
 
-        // Asignación de eventos
+        // Asignación de eventos (sin cambios)
         cartelBtns.forEach(btn => btn.addEventListener('click', abrirModal));
         closeModalBtn.addEventListener('click', cerrarModal);
         modal.addEventListener('click', (e) => {
@@ -136,11 +150,9 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         });
 
-        // Asignamos el nuevo manejador de eventos a los campos de texto
         inputs.forEach(input => {
-            // El evento 'input' es el correcto para celulares y computadoras
             input.addEventListener('input', handleInputValidation);
         });
     }
-    // === FIN: LÓGICA CORREGIDA PARA PERSONALIZADOR DE CARTEL ===
+    // === FIN: LÓGICA REFORZADA PARA PERSONALIZADOR DE CARTEL ===
 });
