@@ -266,8 +266,8 @@ footer {
 /* Estilo del botón */
 .cartel-btn {
     background-color: #b11f0e;
-    color: #fff;
-    border: 1px solid #fff;
+    color: #000000;
+    border: 1px solid #000000;
     padding: 8px 12px;
     border-radius: 5px;
     cursor: pointer;
@@ -444,3 +444,4 @@ footer {
         font-size: 1rem; /* Reduce el tamaño del slogan */
     }
 }
+
