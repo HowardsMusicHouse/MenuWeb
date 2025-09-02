@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
-    // === INICIO: LÓGICA REFORZADA PARA PERSONALIZADOR DE CARTEL ===
+    // === INICIO: LÓGICA FINAL PARA PERSONALIZADOR DE CARTEL (CON FILTRO DE CARACTERES) ===
 
     const cartelBtns = document.querySelectorAll('.cartel-btn');
     const modal = document.getElementById('cartel-modal');
@@ -68,7 +68,6 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         }
         
-        // Función de conteo sin cambios, lee el estado actual de los inputs
         function contarUso() {
             const uso = {};
             const textoCompleto = inputs.map(input => input.value).join('').toUpperCase();
@@ -80,51 +79,42 @@ document.addEventListener("DOMContentLoaded", function() {
             return uso;
         }
 
-        // Nueva función de validación más robusta
+        // Función de validación con el nuevo filtro de caracteres
         function handleInputValidation(event) {
             const input = event.target;
             const inputId = input.id;
 
-            // 1. Tomamos una "foto" del estado actual de todos los inputs
-            const currentValues = {};
-            inputs.forEach(i => {
-                currentValues[i.id] = i.value.toUpperCase();
-            });
+            // 1. **FILTRO DE CARACTERES**: Limpiamos el texto al instante.
+            // Se convierte a mayúsculas y se elimina cualquier carácter que NO sea A-Z, Ñ o un espacio.
+            // Por ejemplo, "aá1!" se convierte en "AA".
+            const sanitizedValue = input.value.toUpperCase().replace(/[^A-ZÑ ]/g, '');
+            
+            // Forzamos al campo de texto a mostrar únicamente el valor limpio.
+            // Esto le da al usuario una respuesta inmediata, ya que los caracteres no válidos ni siquiera aparecerán.
+            input.value = sanitizedValue;
 
-            // 2. Contamos el uso de letras basándonos en esa "foto"
-            const usoActual = (function() {
-                const uso = {};
-                const textoCompleto = Object.values(currentValues).join('');
-                for (const char of textoCompleto) {
-                    if (inventarioLetras.hasOwnProperty(char)) {
-                        uso[char] = (uso[char] || 0) + 1;
-                    }
-                }
-                return uso;
-            })();
-
-            // 3. Verificamos si el estado actual es válido
-            let esValido = true;
+            // 2. **VALIDACIÓN DE INVENTARIO**: Ahora que el texto está limpio, contamos las letras.
+            const usoActual = contarUso();
+            let exceedsInventory = false;
             for (const letra in usoActual) {
                 if (usoActual[letra] > inventarioLetras[letra]) {
-                    esValido = false;
+                    exceedsInventory = true;
                     break;
                 }
             }
-
-            // 4. Actuamos en consecuencia
-            if (esValido) {
-                // Si es válido, actualizamos el valor guardado y nos aseguramos de que esté en mayúsculas
-                input.value = currentValues[inputId];
-                lastValidValues[inputId] = currentValues[inputId];
-            } else {
-                // Si es inválido, forzamos la reversión al último estado bueno conocido
+            
+            // 3. **ACCIÓN FINAL**: Decidimos si revertir o aceptar el nuevo texto.
+            if (exceedsInventory) {
+                // Si se excede el inventario, revertimos al último estado válido conocido.
                 input.value = lastValidValues[inputId];
                 input.classList.add('error');
                 setTimeout(() => input.classList.remove('error'), 500);
+            } else {
+                // Si el conteo es correcto, el texto limpio es el nuevo estado válido.
+                lastValidValues[inputId] = input.value;
             }
 
-            // 5. Al final, siempre actualizamos la interfaz de letras disponibles
+            // 4. **ACTUALIZACIÓN DE UI**: Reflejamos el estado final en el contador de letras.
             renderizarLetrasDisponibles(contarUso());
         }
         
@@ -154,5 +144,5 @@ document.addEventListener("DOMContentLoaded", function() {
             input.addEventListener('input', handleInputValidation);
         });
     }
-    // === FIN: LÓGICA REFORZADA PARA PERSONALIZADOR DE CARTEL ===
+    // === FIN: LÓGICA FINAL PARA PERSONALIZADOR DE CARTEL ===
 });
