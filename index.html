@@ -100,7 +100,7 @@
             <div class="menu-item">
                 <img src="images/snithbult.webp" alt="Imagen de snithbult trago" class="item-img">
                 <div class="item-info">
-                    <h3>SNITCHBULL</h3>
+                    <h3>SNITHBULT</h3>
                     <p>Red Bull, absolut durazno, pomelo, almíbar y limón.</p>
                 </div>
                 <span class="price">$8500</span>
@@ -355,6 +355,7 @@
                 <div class="item-info">
                     <h3>ABSOLUT ELIX </h3>
                     <p>+ 6 RED BULL</p>
+                    <button class="cartel-btn">Personaliza tu cartel</button>
                 </div>
                 <span class="price">$160000</span>
             </div>
@@ -363,6 +364,7 @@
                 <div class="item-info">
                     <h3>CIROC</h3>
                     <p> + 6 RED BULL</p>
+                    <button class="cartel-btn">Personaliza tu cartel</button>
                 </div>
                 <span class="price">$180000</span>
             </div>
@@ -371,6 +373,7 @@
                 <div class="item-info">
                     <h3>GREY GOOSE</h3>
                     <p> + 6 RED BULL</p>
+                    <button class="cartel-btn">Personaliza tu cartel</button>
                 </div>
                 <span class="price">$190000</span>
             </div>
@@ -403,8 +406,25 @@
 </a>
 
 <script src="script.js"></script>
+
+<div id="cartel-modal" class="modal-overlay">
+    <div class="modal-content">
+        <button id="close-modal" class="close-btn">&times;</button>
+        <h2>¡Personaliza tu Cartel!</h2>
+        <p>Escribe tu frase en las 3 filas (máx. 15 letras por fila).</p>
+        
+        <div class="cartel-inputs">
+            <input type="text" id="fila1" class="cartel-input" maxlength="15" placeholder="FILA 1">
+            <input type="text" id="fila2" class="cartel-input" maxlength="15" placeholder="FILA 2">
+            <input type="text" id="fila3" class="cartel-input" maxlength="15" placeholder="FILA 3">
+        </div>
+
+        <div id="letras-disponibles">
+            <h3>Letras Disponibles:</h3>
+            <div id="disponibles-container">
+                </div>
+        </div>
+    </div>
+</div>
 </body>
-
 </html>
-
-
