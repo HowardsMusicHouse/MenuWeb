@@ -1,25 +1,20 @@
 document.addEventListener("DOMContentLoaded", function() {
-    // Código para el acordeón
+    // Código para el acordeón (sin cambios)
     const sections = document.querySelectorAll(".menu-section");
 
     sections.forEach(section => {
         const toggle = section.querySelector(".section-toggle");
         
         toggle.addEventListener("click", () => {
-            // 1. Añade la clase .clicked para el efecto de parpadeo
             toggle.classList.add("clicked");
-            
-            // 2. Remueve la clase .clicked después de 500ms (0.5 segundos)
             setTimeout(() => {
                 toggle.classList.remove("clicked");
             }, 500);
-
-            // 3. Alterna la clase 'collapsed' para mostrar/ocultar el contenido
             section.classList.toggle("collapsed");
         });
     });
 
-    // Código para el desplazamiento suave (smooth scroll)
+    // Código para el desplazamiento suave (smooth scroll) (sin cambios)
     const backToTopBtn = document.getElementById("back-to-top");
     
     if (backToTopBtn) {
@@ -32,13 +27,11 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
-    // === INICIO: LÓGICA PARA PERSONALIZADOR DE CARTEL ===
+    // === INICIO: LÓGICA CORREGIDA PARA PERSONALIZADOR DE CARTEL (COMPATIBLE CON CELULARES) ===
 
-    // Elementos del DOM para el modal
     const cartelBtns = document.querySelectorAll('.cartel-btn');
     const modal = document.getElementById('cartel-modal');
     
-    // Si el modal no existe en la página, no se ejecuta el resto del código para evitar errores.
     if (modal) {
         const closeModalBtn = document.getElementById('close-modal');
         const inputs = [
@@ -48,7 +41,13 @@ document.addEventListener("DOMContentLoaded", function() {
         ];
         const disponiblesContainer = document.getElementById('disponibles-container');
 
-        // Inventario de letras según tus reglas
+        // Almacenará el último texto válido para poder revertir si el usuario se pasa de letras
+        let lastValidValues = {
+            fila1: "",
+            fila2: "",
+            fila3: ""
+        };
+
         const inventarioLetras = {
             'A': 4, 'E': 4, 'I': 4, 'O': 4, 'U': 4,
             'B': 2, 'C': 2, 'D': 2, 'F': 2, 'G': 2, 'H': 2, 'J': 2, 'K': 2,
@@ -56,7 +55,6 @@ document.addEventListener("DOMContentLoaded", function() {
             'T': 2, 'V': 2, 'W': 2, 'X': 2, 'Y': 2, 'Z': 2
         };
 
-        // Función para mostrar el contador de letras restantes
         function renderizarLetrasDisponibles(letrasUsadas = {}) {
             disponiblesContainer.innerHTML = '';
             for (const letra in inventarioLetras) {
@@ -71,9 +69,9 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         }
 
-        // Función para contar cuántas veces se ha usado cada letra en los 3 campos
         function contarUso() {
             const uso = {};
+            // Unimos el texto de los 3 inputs para el conteo total
             const textoCompleto = inputs.map(input => input.value).join('').toUpperCase();
             for (const char of textoCompleto) {
                 if (inventarioLetras.hasOwnProperty(char)) {
@@ -83,41 +81,45 @@ document.addEventListener("DOMContentLoaded", function() {
             return uso;
         }
 
-        // Función que se ejecuta cada vez que el usuario escribe algo
-        function actualizarUI() {
+        // Nueva función principal que se ejecuta con el evento 'input'
+        function handleInputValidation(event) {
             const usoActual = contarUso();
-            renderizarLetrasDisponibles(usoActual);
-        }
+            let esValido = true;
 
-        // Función que previene escribir una letra si ya no quedan disponibles
-        function handleKeyDown(event) {
-            // Permitir siempre teclas de control (borrar, flechas, tab, etc.)
-            const teclasPermitidas = ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Tab', 'Enter', 'Shift', 'Home', 'End'];
-            if (event.ctrlKey || event.metaKey || teclasPermitidas.includes(event.key)) {
-                return;
-            }
-
-            const tecla = event.key.toUpperCase();
-
-            // Si es una letra del inventario, verificar disponibilidad
-            if (inventarioLetras.hasOwnProperty(tecla)) {
-                const usoActual = contarUso();
-                const restantes = inventarioLetras[tecla] - (usoActual[tecla] || 0);
-                if (restantes <= 0) {
-                    event.preventDefault(); // Bloquear la tecla
-                    const input = event.target;
-                    input.classList.add('error');
-                    setTimeout(() => input.classList.remove('error'), 300); // Feedback visual
+            // 1. Comprueba si alguna letra excede el inventario
+            for (const letra in usoActual) {
+                if (usoActual[letra] > inventarioLetras[letra]) {
+                    esValido = false;
+                    break;
                 }
-            } else if (tecla !== ' ') { // Si no es una letra del inventario y tampoco es un espacio
-                event.preventDefault(); // Bloquear cualquier otra tecla (números, símbolos, etc.)
             }
+            
+            const input = event.target;
+            const inputId = input.id;
+
+            // 2. Si el texto NO es válido, revierte al valor anterior
+            if (!esValido) {
+                input.value = lastValidValues[inputId];
+                input.classList.add('error');
+                setTimeout(() => input.classList.remove('error'), 500);
+            } else {
+            // 3. Si ES válido, actualiza el valor guardado
+                // Forzamos mayúsculas para consistencia
+                input.value = input.value.toUpperCase();
+                lastValidValues[inputId] = input.value;
+            }
+
+            // 4. Actualiza el contador de letras con el estado final (ya sea nuevo o revertido)
+            renderizarLetrasDisponibles(contarUso());
         }
         
-        // Funciones para abrir y cerrar el modal
         function abrirModal() {
-            inputs.forEach(input => input.value = ''); // Limpiar campos al abrir
-            actualizarUI(); // Actualizar el contador de letras
+            // Resetea los campos y los valores guardados cada vez que se abre
+            inputs.forEach(input => {
+                input.value = '';
+            });
+            lastValidValues = { fila1: "", fila2: "", fila3: "" };
+            renderizarLetrasDisponibles(); // Actualiza la UI al estado inicial
             modal.classList.add('visible');
         }
 
@@ -125,20 +127,20 @@ document.addEventListener("DOMContentLoaded", function() {
             modal.classList.remove('visible');
         }
 
-        // Asignar eventos a los botones y al modal
+        // Asignación de eventos
         cartelBtns.forEach(btn => btn.addEventListener('click', abrirModal));
         closeModalBtn.addEventListener('click', cerrarModal);
         modal.addEventListener('click', (e) => {
-            if (e.target === modal) { // Cerrar si se hace clic en el fondo oscuro
+            if (e.target === modal) {
                 cerrarModal();
             }
         });
 
-        // Asignar eventos de escritura a los campos de texto
+        // Asignamos el nuevo manejador de eventos a los campos de texto
         inputs.forEach(input => {
-            input.addEventListener('input', actualizarUI);
-            input.addEventListener('keydown', handleKeyDown);
+            // El evento 'input' es el correcto para celulares y computadoras
+            input.addEventListener('input', handleInputValidation);
         });
     }
-    // === FIN: LÓGICA PARA PERSONALIZADOR DE CARTEL ===
+    // === FIN: LÓGICA CORREGIDA PARA PERSONALIZADOR DE CARTEL ===
 });
