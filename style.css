@@ -266,8 +266,8 @@ footer {
 /* Estilo del botón */
 .cartel-btn {
     background-color: #b11f0e;
-    color: #222;
-    border: 1px solid #222;
+    color: #fff;
+    border: 1px solid #fff;
     padding: 8px 12px;
     border-radius: 5px;
     cursor: pointer;
@@ -280,6 +280,31 @@ footer {
     background-color: #ffffff;
     color: #b11f0e;
     transform: scale(1.05);
+}
+
+/* Estilos para el contenedor del nuevo botón */
+.custom-cartel-btn-container {
+    text-align: center;
+    margin-top: 30px;
+    margin-bottom: 20px;
+}
+
+/* Estilos para el nuevo botón del cartel */
+.custom-cartel-btn {
+    background-color: #b11f0e;
+    color: #000000;
+    border: none;
+    padding: 15px 30px; /* Aumenta el tamaño del padding */
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.2rem; /* Aumenta el tamaño de la fuente */
+    text-transform: uppercase;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.custom-cartel-btn:hover {
+    background-color: #8c190c;
+    transform: translateY(-2px);
 }
 
 /* Estilos del Modal (ventana emergente) */
@@ -444,5 +469,3 @@ footer {
         font-size: 1rem; /* Reduce el tamaño del slogan */
     }
 }
-
-
