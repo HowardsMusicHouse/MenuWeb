@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // === INICIO: LÓGICA FINAL PARA PERSONALIZADOR DE CARTEL (CON FILTRO DE CARACTERES) ===
 
-    const cartelBtns = document.querySelectorAll('.cartel-btn');
+    const cartelBtn = document.getElementById('cartel-btn');
     const modal = document.getElementById('cartel-modal');
     
     if (modal) {
@@ -132,7 +132,7 @@ document.addEventListener("DOMContentLoaded", function() {
         }
 
         // Asignación de eventos (sin cambios)
-        cartelBtns.forEach(btn => btn.addEventListener('click', abrirModal));
+        cartelBtn.addEventListener('click', abrirModal);
         closeModalBtn.addEventListener('click', cerrarModal);
         modal.addEventListener('click', (e) => {
             if (e.target === modal) {
@@ -146,4 +146,3 @@ document.addEventListener("DOMContentLoaded", function() {
     }
     // === FIN: LÓGICA FINAL PARA PERSONALIZADOR DE CARTEL ===
 });
-
